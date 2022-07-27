@@ -1,0 +1,52 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: Home Finance
+      description: This is an awesome app!
+      version: 1.0.0
+    security:
+      - Bearer: [ ]
+    components:
+      securitySchemes:
+        Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+      schemas:
+        Token:
+          type: object
+          properties:
+            token:
+              type: string
+              description: 'Token'
+
+        TokenRequestBody:
+          type: object
+          properties:
+            username:
+              type: string
+              description: 'Email'
+            password:
+              type: string
+              description: 'Password'
+    paths:
+      /api/token:
+        post:
+          tags: [ 'User / Authorization' ]
+          summary: 'Get JWT token'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TokenRequestBody'
+          responses:
+            200:
+              description: 'User was authenticated, new token has been generated'
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Token'
+  areas: # to filter documented areas
+    path_patterns:
+      - ^/api
