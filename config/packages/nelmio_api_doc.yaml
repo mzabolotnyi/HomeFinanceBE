@@ -1,8 +1,8 @@
 nelmio_api_doc:
   documentation:
     info:
-      title: Home Finance
-      description: This is an awesome app!
+      title: Home Finance API
+      description: API Documentation
       version: 1.0.0
     security:
       - Bearer: [ ]
@@ -49,4 +49,4 @@ nelmio_api_doc:
                     $ref: '#/components/schemas/Token'
   areas: # to filter documented areas
     path_patterns:
-      - ^/api
+      - ^/api(?!/(doc|{index}|contexts))

@@ -1,5 +1,8 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    exception_controller: null
+    globals:
+        appHost: '%env(APP_HOST)%'
 
 when@test:
     twig:

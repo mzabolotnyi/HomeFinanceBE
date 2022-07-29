@@ -4,3 +4,4 @@ api_login_check:
 controllers:
     resource: ../src/Controller/
     type: attribute
+    prefix: /api

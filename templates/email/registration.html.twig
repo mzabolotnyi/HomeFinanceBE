@@ -1,0 +1,12 @@
+{% extends 'email/base.html.twig' %}
+
+{% block subject %}Registration on HomeFinance{% endblock %}
+
+{% block body %}
+
+    Click to confirm registration
+
+{% endblock %}
+
+{% block button_href %}{{ appHost }}/registration/confirm?token={{ user.confirmationToken }}{% endblock %}
+{% block button_text %}Confirm{% endblock %}

@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Controller\User;
+
+use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
+use App\DataPersister\UserDataPersister;
+use App\Entity\User;
+use App\Model\Dto\Input\User\RegisterInput;
+use App\Service\Mailer\Mailer;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+#[OA\Tag(name: 'User / Registration')]
+#[Route(path: '/registration')]
+class RegistrationController extends AbstractController
+{
+    #[Route('', methods: ['POST'])]
+    #[OA\Post(
+        summary: 'Register user',
+        requestBody: new OA\RequestBody(content: new OA\JsonContent(ref: new Model(type: RegisterInput::class))),
+        responses: [
+            new OA\Response(response: 204, description: 'Confirmation email has been sent via email'),
+            new OA\Response(response: 422, description: 'Validation error'),
+        ]
+    )]
+    public function register(
+        ValidatorInterface $validator,
+        UserDataPersister  $persister,
+        Mailer             $mailer,
+        RegisterInput      $input
+    ): JsonResponse
+    {
+        $user = new User();
+        $user->setEmail($input->email);
+        $user->setName($input->name);
+        $user->setPlainPassword($input->password);
+
+        if (count($violations = $validator->validate($user))) {
+            throw new ValidationException($violations);
+        }
+
+        $user->generateConfirmationToken();
+        $persister->persist($user);
+
+        $mailer->sendRegistrationEmail($user);
+
+        return $this->json(null, 204);
+    }
+}

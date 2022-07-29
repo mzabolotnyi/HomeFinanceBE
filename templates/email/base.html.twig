@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <style>
+
+        .container {
+            font-size: 14px;
+        }
+
+        td.button > a {
+            display: block;
+            cursor: pointer;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #3D4454;
+            color: #ffffff;
+            line-height: 16px;
+            letter-spacing: 0.5;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            text-decoration: none;
+            width: 200px;
+        }
+
+        td.subject > p {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <table class="main">
+        <tr>
+            <td class="subject">
+                <p>{% block subject %}{% endblock %}</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="body">
+                {% block body %}{% endblock %}
+            </td>
+        </tr>
+        {% block button_block %}
+            <tr>
+                <td class="button">
+                    <a href="{% block button_href %}{% endblock %}">{% block button_text %}{% endblock %}</a>
+                </td>
+            </tr>
+        {% endblock %}
+    </table>
+</div>
+</body>
+</html>

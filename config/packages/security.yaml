@@ -14,22 +14,19 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js|doc)/
             security: false
 
-        login:
-            pattern: ^/api/token
+        api:
+            pattern:   ^/api
             stateless: true
             json_login:
                 check_path: /api/token
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
-        api:
-            pattern:   ^/api
-            stateless: true
             jwt: ~
 
     access_control:
-        - { path: ^/api/token, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/token,          roles: PUBLIC_ACCESS }
+        - { path: ^/api/registration,   roles: PUBLIC_ACCESS }
+        - { path: ^/api,                roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
