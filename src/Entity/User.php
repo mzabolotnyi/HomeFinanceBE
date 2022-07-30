@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -32,17 +34,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(max: 255)]
     private ?string $name;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
-    #[ORM\Column]
-    private ?string $confirmationToken;
+    #[ORM\Column(nullable: true, unique: true)]
+    private ?string $token;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTime $tokenGeneratedAt;
 
     #[ORM\Column]
     private ?string $password;
 
-    #[Assert\Length(min: 6,max: 60)]
-    private ?string $plainPassword;
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $enabled = false;
+
+    #[Assert\Length(min: 6, max: 60)]
+    private ?string $plainPassword = null;
 
     public function getId(): ?int
     {
@@ -96,7 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials()
     {
-         $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getPlainPassword(): ?string
@@ -123,20 +131,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getConfirmationToken(): ?string
+    public function getToken(): ?string
     {
-        return $this->confirmationToken;
+        return $this->token;
     }
 
-    public function setConfirmationToken(string $confirmationToken): self
+    public function setToken(string $token): self
     {
-        $this->confirmationToken = $confirmationToken;
+        $this->token = $token;
 
         return $this;
     }
 
-    public function generateConfirmationToken(): void
+    public function getTokenGeneratedAt(): ?\DateTimeInterface
     {
-        $this->confirmationToken = bin2hex(random_bytes(16));
+        return $this->tokenGeneratedAt;
+    }
+
+    public function setTokenGeneratedAt(?\DateTimeInterface $tokenGeneratedAt): self
+    {
+        $this->tokenGeneratedAt = $tokenGeneratedAt;
+
+        return $this;
+    }
+
+    public function generateToken(): void
+    {
+        $this->token            = bin2hex(random_bytes(16));
+        $this->tokenGeneratedAt = new DateTime();
+    }
+
+    public function clearToken(): void
+    {
+        $this->token            = null;
+        $this->tokenGeneratedAt = null;
+    }
+
+    public function isEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
     }
 }

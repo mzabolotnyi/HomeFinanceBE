@@ -8,5 +8,5 @@
 
 {% endblock %}
 
-{% block button_href %}{{ appHost }}/registration/confirm?token={{ user.confirmationToken }}{% endblock %}
+{% block button_href %}{{ appHost }}/registration/confirm/{{ user.token }}{% endblock %}
 {% block button_text %}Confirm{% endblock %}

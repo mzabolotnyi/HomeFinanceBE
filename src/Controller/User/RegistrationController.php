@@ -43,10 +43,30 @@ class RegistrationController extends AbstractController
             throw new ValidationException($violations);
         }
 
-        $user->generateConfirmationToken();
+        $user->generateToken();
         $persister->persist($user);
 
         $mailer->sendRegistrationEmail($user);
+
+        return $this->json(null, 204);
+    }
+
+    #[Route('/confirm/{token}', methods: ['POST'])]
+    #[OA\Post(
+        summary: 'Confirm registration',
+        parameters: [
+            new OA\Parameter(name: 'token', in: 'path', description: 'Confirmation token')
+        ],
+        responses: [
+            new OA\Response(response: 204, description: 'Registration confirmed'),
+            new OA\Response(response: 404, description: 'Invalid token'),
+        ]
+    )]
+    public function confirm(UserDataPersister $persister, User $user): JsonResponse
+    {
+        $user->clearToken();
+        $user->setEnabled(true);
+        $persister->persist($user);
 
         return $this->json(null, 204);
     }
