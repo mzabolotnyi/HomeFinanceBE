@@ -19,7 +19,6 @@ nelmio_api_doc:
             token:
               type: string
               description: 'Token'
-
         TokenRequestBody:
           type: object
           properties:
@@ -29,6 +28,12 @@ nelmio_api_doc:
             password:
               type: string
               description: 'Password'
+        TokenRefreshRequestBody:
+          type: object
+          properties:
+            refreshToken:
+              type: string
+              description: 'Refresh token'
     paths:
       /api/token:
         post:
@@ -43,6 +48,23 @@ nelmio_api_doc:
           responses:
             200:
               description: 'User was authenticated, new token has been generated'
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Token'
+      /api/token/refresh:
+        post:
+          tags: [ 'User / Authentication' ]
+          summary: 'Refresh JWT token'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TokenRefreshRequestBody'
+          responses:
+            200:
+              description: 'New token has been generated'
               content:
                 application/json:
                   schema:

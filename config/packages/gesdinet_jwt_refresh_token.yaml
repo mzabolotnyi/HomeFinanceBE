@@ -1,0 +1,5 @@
+gesdinet_jwt_refresh_token:
+  ttl: '%env(int:JWT_REFRESH_TTL)%'
+  ttl_update: true
+  token_parameter_name: refreshToken
+  refresh_token_class: App\Entity\User\RefreshToken

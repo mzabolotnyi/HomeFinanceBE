@@ -4,13 +4,13 @@ namespace App\Controller\User;
 
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use App\DataPersister\UserDataPersister;
-use App\Entity\User;
+use App\Entity\User\User;
 use App\Model\Dto\Input\User\RegisterInput;
 use App\Service\Mailer\Mailer;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use OpenApi\Attributes as OA;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
