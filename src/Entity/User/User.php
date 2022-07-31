@@ -26,6 +26,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             'security' => "is_granted('ROLE_ADMIN') or object === user"
         ]
     ],
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['write']],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
