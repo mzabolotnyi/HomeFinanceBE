@@ -21,6 +21,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     itemOperations: [
         'get' => [
             'security' => "is_granted('ROLE_ADMIN') or object === user"
+        ],
+        'put' => [
+            'security' => "is_granted('ROLE_ADMIN') or object === user"
         ]
     ],
 )]
@@ -44,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
     #[Assert\Length(max: 255)]
-    #[Groups('write')]
+    #[Groups(['read', 'write'])]
     private ?string $name;
 
     #[ORM\Column(type: Types::JSON)]

@@ -26,7 +26,7 @@ class UserSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        if ('api_users_get_item' !== $request->attributes->get('_route')) {
+        if (!in_array($request->attributes->get('_route'), ['api_users_get_item', 'api_users_put_item'])) {
             return;
         }
 
