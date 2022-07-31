@@ -22,3 +22,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Serializer\ContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: [ '@App\Serializer\ContextBuilder.inner' ]
+        autoconfigure: false
+
+    App\Serializer\MetadataFactory:
+        decorates: 'serializer.mapping.class_metadata_factory'
+        arguments:
+            $loader: '@serializer.mapping.chain_loader'

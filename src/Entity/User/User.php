@@ -2,18 +2,28 @@
 
 namespace App\Entity\User;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\Mixin\TimestampableEntity;
 use App\Repository\User\UserRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ["email"])]
+#[ApiResource(
+    collectionOperations: [],
+    itemOperations: [
+        'get' => [
+            'security' => "is_granted('ROLE_ADMIN') or object === user"
+        ]
+    ],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;
@@ -21,35 +31,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('read')]
     private ?int $id;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotNull]
     #[Assert\Email]
     #[Assert\Length(max: 180)]
+    #[Groups('read')]
     private ?string $email;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
     #[Assert\Length(max: 255)]
+    #[Groups('write')]
     private ?string $name;
 
     #[ORM\Column(type: Types::JSON)]
+    #[Groups('internal')]
     private array $roles = [];
 
     #[ORM\Column(nullable: true, unique: true)]
+    #[Groups('internal')]
     private ?string $token;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups('internal')]
     private ?DateTime $tokenGeneratedAt;
 
     #[ORM\Column]
+    #[Groups('internal')]
     private ?string $password;
 
     #[ORM\Column(type: Types::BOOLEAN)]
+    #[Groups('internal')]
     private bool $enabled = false;
 
     #[Assert\Length(min: 6, max: 60)]
+    #[Groups('internal')]
     private ?string $plainPassword = null;
 
     public function getId(): ?int
@@ -69,6 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    #[Groups('internal')]
     public function getUserIdentifier(): string
     {
         return $this->email;
@@ -76,11 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return array_unique($this->roles);
     }
 
     public function setRoles(array $roles): self
