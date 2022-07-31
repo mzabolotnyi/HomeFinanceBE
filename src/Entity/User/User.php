@@ -176,6 +176,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @param int $ttl in seconds
+     * @return bool
+     */
+    public function tokenExpired(int $ttl): bool
+    {
+        return $this->tokenGeneratedAt < (new DateTime())->modify("-$ttl second");
+    }
+
     public function generateToken(): void
     {
         $this->token            = bin2hex(random_bytes(16));

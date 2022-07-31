@@ -27,9 +27,10 @@ security:
                 check_path: /api/token/refresh
 
     access_control:
-        - { path: ^/api/token,          roles: PUBLIC_ACCESS }
-        - { path: ^/api/registration,   roles: PUBLIC_ACCESS }
-        - { path: ^/api,                roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/token,            roles: PUBLIC_ACCESS }
+        - { path: ^/api/registration,     roles: PUBLIC_ACCESS }
+        - { path: ^/api/recover-password, roles: PUBLIC_ACCESS }
+        - { path: ^/api,                  roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

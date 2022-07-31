@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route(path: '/registration')]
 class RegistrationController extends AbstractController
 {
-    #[Route('', methods: ['POST'])]
+    #[Route('', methods: ['POST'], defaults: ['_api_respond' => true])]
     #[OA\Post(
         summary: 'Register user',
         requestBody: new OA\RequestBody(content: new OA\JsonContent(ref: new Model(type: RegisterInput::class))),
@@ -51,7 +51,7 @@ class RegistrationController extends AbstractController
         return $this->json(null, 204);
     }
 
-    #[Route('/confirm/{token}', methods: ['POST'])]
+    #[Route('/confirm/{token}', methods: ['POST'], defaults: ['_api_respond' => true])]
     #[OA\Post(
         summary: 'Confirm registration',
         parameters: [
