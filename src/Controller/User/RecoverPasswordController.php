@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route(path: '/recover-password')]
 class RecoverPasswordController extends AbstractController
 {
-    #[Route('/request', methods: ['POST'], defaults: ['_api_respond' => true])]
+    #[Route('/request', methods: ['POST'])]
     #[OA\Post(
         summary: 'Create recover request',
         requestBody: new OA\RequestBody(content: new OA\JsonContent(ref: new Model(type: RecoverPasswordRequestInput::class))),
@@ -49,7 +49,7 @@ class RecoverPasswordController extends AbstractController
         return $this->json(null, 204);
     }
 
-    #[Route('/{token}', methods: ['POST'], defaults: ['_api_respond' => true])]
+    #[Route('/{token}', methods: ['POST'])]
     #[OA\Post(
         summary: 'Set new password',
         parameters: [
