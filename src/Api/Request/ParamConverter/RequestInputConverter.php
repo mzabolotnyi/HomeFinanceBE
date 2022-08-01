@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Request\ParamConverter;
+namespace App\Api\Request\ParamConverter;
 
-use App\Model\Dto\Input\InputInterface;
+use App\Api\Dto\Input\InputInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;

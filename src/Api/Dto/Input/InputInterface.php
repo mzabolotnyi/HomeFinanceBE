@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Dto\Input;
+namespace App\Api\Dto\Input;
 
 interface InputInterface
 {

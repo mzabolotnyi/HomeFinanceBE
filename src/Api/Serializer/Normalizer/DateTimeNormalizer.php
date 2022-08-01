@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Serializer\Normalizer;
+namespace App\Api\Serializer\Normalizer;
 
 use DateTimeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

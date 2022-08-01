@@ -3,10 +3,10 @@
 namespace App\Controller\User;
 
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
-use App\DataPersister\UserDataPersister;
+use App\Api\DataPersister\UserDataPersister;
+use App\Api\Dto\Input\User\RecoverPasswordInput;
+use App\Api\Dto\Input\User\RecoverPasswordRequestInput;
 use App\Entity\User\User;
-use App\Model\Dto\Input\User\RecoverPasswordInput;
-use App\Model\Dto\Input\User\RecoverPasswordRequestInput;
 use App\Repository\User\UserRepository;
 use App\Service\Mailer\Mailer;
 use Nelmio\ApiDocBundle\Annotation\Model;

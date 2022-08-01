@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Serializer;
+namespace App\Api\Serializer;
 
 use Symfony\Component\Serializer\Mapping\ClassMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory as Decorated;

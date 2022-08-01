@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model\Dto\Input\User;
+namespace App\Api\Dto\Input\User;
 
-use App\Model\Dto\Input\InputInterface;
+use App\Api\Dto\Input\InputInterface;
 
 class RegisterInput implements InputInterface
 {

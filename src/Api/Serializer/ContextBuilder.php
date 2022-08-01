@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Serializer;
+namespace App\Api\Serializer;
 
 use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;

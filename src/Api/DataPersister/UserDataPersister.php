@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataPersister;
+namespace App\Api\DataPersister;
 
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use App\Entity\User\User;
