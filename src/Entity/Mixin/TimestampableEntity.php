@@ -2,6 +2,7 @@
 
 namespace App\Entity\Mixin;
 
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -12,33 +13,33 @@ trait TimestampableEntity
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups('read')]
-    protected $createdAt;
+    private ?DateTime $createdAt;
 
     #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups('read')]
-    protected $updatedAt;
+    private ?DateTime $updatedAt;
 
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getCreatedAt()
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt)
+    public function setUpdatedAt(DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
