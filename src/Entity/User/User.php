@@ -37,20 +37,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups('read')]
-    private ?int $id;
+    private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotNull]
     #[Assert\Email]
     #[Assert\Length(max: 180)]
     #[Groups('read')]
-    private ?string $email;
+    private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
     #[Assert\Length(max: 255)]
     #[Groups(['read', 'write'])]
-    private ?string $name;
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::JSON)]
     #[Groups('internal')]
@@ -58,15 +58,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true, unique: true)]
     #[Groups('internal')]
-    private ?string $token;
+    private ?string $token = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups('internal')]
-    private ?DateTime $tokenGeneratedAt;
+    private ?DateTime $tokenGeneratedAt = null;
 
     #[ORM\Column]
     #[Groups('internal')]
-    private ?string $password;
+    private ?string $password = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     #[Groups('internal')]

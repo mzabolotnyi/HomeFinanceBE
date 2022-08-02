@@ -13,12 +13,12 @@ trait TimestampableEntity
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups('read')]
-    private ?DateTime $createdAt;
+    private ?DateTime $createdAt = null;
 
     #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups('read')]
-    private ?DateTime $updatedAt;
+    private ?DateTime $updatedAt = null;
 
     public function setCreatedAt(DateTime $createdAt): self
     {
