@@ -5,7 +5,7 @@ namespace App\Api\Serializer\Normalizer;
 use DateTimeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class DateTimeNormalizer implements NormalizerInterface
+final class DateTimeNormalizer implements NormalizerInterface
 {
     public function supportsNormalization($data, string $format = null, array $context = [])
     {

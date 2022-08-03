@@ -6,7 +6,7 @@ use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 
-class ContextBuilder implements SerializerContextBuilderInterface
+final class ContextBuilder implements SerializerContextBuilderInterface
 {
     public function __construct(
         private SerializerContextBuilderInterface $decorated,

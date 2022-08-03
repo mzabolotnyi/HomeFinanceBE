@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
-class RequestInputConverter implements ParamConverterInterface
+final class RequestInputConverter implements ParamConverterInterface
 {
     public function __construct(
         private SerializerInterface $serializer,

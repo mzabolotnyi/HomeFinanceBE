@@ -5,7 +5,7 @@ namespace App\Api\Serializer;
 use Symfony\Component\Serializer\Mapping\ClassMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory as Decorated;
 
-class MetadataFactory extends Decorated
+final class MetadataFactory extends Decorated
 {
     public function getMetadataFor($value): ClassMetadataInterface
     {

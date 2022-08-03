@@ -2,12 +2,12 @@
 
 namespace App\Api\DataPersister;
 
-use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Entity\User\User;
 use App\Repository\User\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserDataPersister implements DataPersisterInterface
+final class UserDataPersister implements ContextAwareDataPersisterInterface
 {
     public function __construct(
         private UserRepository              $repository,
@@ -16,7 +16,7 @@ class UserDataPersister implements DataPersisterInterface
     {
     }
 
-    public function supports($data): bool
+    public function supports($data, array $context = []): bool
     {
         return $data instanceof User;
     }
@@ -24,7 +24,7 @@ class UserDataPersister implements DataPersisterInterface
     /**
      * @param User $data
      */
-    public function persist($data)
+    public function persist($data, array $context = [])
     {
         if ($data->getPlainPassword()) {
             $data->setPassword(
@@ -33,14 +33,14 @@ class UserDataPersister implements DataPersisterInterface
             $data->eraseCredentials();
         }
 
-        $this->repository->add($data);
+        $this->repository->add($data, true);
     }
 
     /**
      * @param User $data
      */
-    public function remove($data)
+    public function remove($data, array $context = [])
     {
-        $this->repository->remove($data);
+        $this->repository->remove($data, true);
     }
 }

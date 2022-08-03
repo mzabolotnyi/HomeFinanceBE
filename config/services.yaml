@@ -32,3 +32,7 @@ services:
         decorates: 'serializer.mapping.class_metadata_factory'
         arguments:
             $loader: '@serializer.mapping.chain_loader'
+
+    App\Api\DataPersister\UserOwnerPersister:
+        bind:
+            $decorated: '@api_platform.doctrine.orm.data_persister'

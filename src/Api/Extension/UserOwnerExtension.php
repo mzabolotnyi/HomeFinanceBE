@@ -10,7 +10,7 @@ use App\Entity\User\User;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-class UserOwnerExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+final class UserOwnerExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
     public function __construct(private Security $security)
     {
@@ -28,9 +28,10 @@ class UserOwnerExtension implements QueryCollectionExtensionInterface, QueryItem
 
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        $user = $this->security->getUser();
+        $user       = $this->security->getUser();
+        $interfaces = class_implements($resourceClass);
 
-        if (!$resourceClass instanceof UserOwnerInterface
+        if (!is_array($interfaces) || !in_array(UserOwnerInterface::class, $interfaces)
             || !$user instanceof User
             || $this->security->isGranted('ROLE_ADMIN')
         ) {
