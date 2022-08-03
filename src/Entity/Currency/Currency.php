@@ -4,6 +4,8 @@ namespace App\Entity\Currency;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\Currency\CurrencyRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -28,6 +30,15 @@ class Currency
     #[ORM\Column(length: 1)]
     #[Groups('read')]
     private ?string $symbol = null;
+
+    #[ORM\OneToMany(mappedBy: 'currency', targetEntity: CurrencyRate::class)]
+    #[Groups('internal')]
+    private Collection $rates;
+
+    public function __construct()
+    {
+        $this->rates = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -54,6 +65,36 @@ class Currency
     public function setSymbol(string $symbol): self
     {
         $this->symbol = $symbol;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CurrencyRate>
+     */
+    public function getRates(): Collection
+    {
+        return $this->rates;
+    }
+
+    public function addRate(CurrencyRate $rate): self
+    {
+        if (!$this->rates->contains($rate)) {
+            $this->rates->add($rate);
+            $rate->setCurrency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRate(CurrencyRate $rate): self
+    {
+        if ($this->rates->removeElement($rate)) {
+            // set the owning side to null (unless already changed)
+            if ($rate->getCurrency() === $this) {
+                $rate->setCurrency(null);
+            }
+        }
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Entity\User;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\Currency\Currency;
 use App\Entity\Mixin\TimestampableEntity;
 use App\Repository\User\UserRepository;
 use DateTime;
@@ -75,6 +76,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(min: 6, max: 60)]
     #[Groups('internal')]
     private ?string $plainPassword = null;
+
+    #[ORM\ManyToOne]
+    #[Groups(['read', 'write'])]
+    private ?Currency $defaultCurrency = null;
 
     public function getId(): ?int
     {
@@ -176,10 +181,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @param int $ttl in seconds
-     * @return bool
-     */
     public function tokenExpired(int $ttl): bool
     {
         return $this->tokenGeneratedAt < (new DateTime())->modify("-$ttl second");
@@ -205,6 +206,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getDefaultCurrency(): ?Currency
+    {
+        return $this->defaultCurrency;
+    }
+
+    public function setDefaultCurrency(?Currency $defaultCurrency): self
+    {
+        $this->defaultCurrency = $defaultCurrency;
 
         return $this;
     }

@@ -20,4 +20,22 @@ class CurrencyRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Currency::class);
     }
+
+    public function add(Currency $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Currency $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 }
