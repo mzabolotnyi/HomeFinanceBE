@@ -2,7 +2,9 @@
 
 namespace App\Entity\Account;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Entity\Currency\Currency;
 use App\Entity\Mixin\HasActive;
 use App\Entity\Mixin\HasName;
@@ -32,6 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
 )]
+#[ApiFilter(PropertyFilter::class)]
 class Account implements UserOwnerInterface
 {
     use HasUser;

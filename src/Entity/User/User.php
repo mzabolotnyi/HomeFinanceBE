@@ -2,7 +2,9 @@
 
 namespace App\Entity\User;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Entity\Currency\Currency;
 use App\Entity\Mixin\TimestampableEntity;
 use App\Repository\User\UserRepository;
@@ -30,6 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
 )]
+#[ApiFilter(PropertyFilter::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;

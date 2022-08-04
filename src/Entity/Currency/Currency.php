@@ -2,7 +2,9 @@
 
 namespace App\Entity\Currency;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Repository\Currency\CurrencyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,6 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     itemOperations: ['get'],
     normalizationContext: ['groups' => ['read']],
 )]
+#[ApiFilter(PropertyFilter::class)]
 class Currency
 {
     #[ORM\Id]

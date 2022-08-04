@@ -2,7 +2,9 @@
 
 namespace App\Entity\Account;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Entity\Mixin\HasName;
 use App\Repository\Account\ImportMethodRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,6 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     itemOperations: ['get'],
     normalizationContext: ['groups' => ['read']],
 )]
+#[ApiFilter(PropertyFilter::class)]
 class ImportMethod
 {
     use HasName;
