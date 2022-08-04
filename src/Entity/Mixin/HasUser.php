@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 trait HasUser
 {
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['internal'])]
     private ?User $user = null;

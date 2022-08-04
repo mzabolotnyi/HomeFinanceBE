@@ -6,7 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Repository\Currency\CurrencyRateRepository;
-use DateTimeInterface;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -33,7 +33,7 @@ class CurrencyRate
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Groups('read')]
-    private ?DateTimeInterface $date = null;
+    private ?DateTimeImmutable $date = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Groups('read')]
@@ -60,12 +60,12 @@ class CurrencyRate
         return $this;
     }
 
-    public function getDate(): ?DateTimeInterface
+    public function getDate(): ?DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(DateTimeInterface $date): self
+    public function setDate(DateTimeImmutable $date): self
     {
         $this->date = $date;
 
