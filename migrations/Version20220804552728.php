@@ -26,7 +26,7 @@ final class Version20220804552728 extends AbstractMigration
             ["name" => "cardNumber", "type" => "string"]
         ]);
 
-        $this->addSql("INSERT INTO import_method (name, slug, fields) VALUES 
+        $this->addSql("INSERT INTO account_import_method (name, slug, fields) VALUES 
             ('Monobank', 'monobank', '$monobankFields'), 
             ('Privatbank', 'privatbank', '$privatbankFields')"
         );

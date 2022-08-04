@@ -6,8 +6,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Mixin\HasName;
 use App\Repository\Account\ImportMethodRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ImportMethodRepository::class)]
+#[ORM\Table(name: 'account_import_method')]
 #[ApiResource(
     collectionOperations: ['get'],
     itemOperations: ['get'],
@@ -26,6 +28,7 @@ class ImportMethod
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['read'])]
     private array $fields = [];
 
     #[ORM\Column(length: 255)]

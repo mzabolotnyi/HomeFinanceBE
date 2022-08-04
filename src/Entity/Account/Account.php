@@ -61,7 +61,7 @@ class Account implements UserOwnerInterface
 
     #[ORM\Column]
     #[Groups(['read', 'write'])]
-    private array $importParams = [];
+    private ?array $importParams = [];
 
     public function __construct()
     {
