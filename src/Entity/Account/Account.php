@@ -55,6 +55,14 @@ class Account implements UserOwnerInterface
     #[Assert\Count(min: 1)]
     private Collection $currencies;
 
+    #[ORM\ManyToOne]
+    #[Groups(['read', 'write'])]
+    private ?ImportMethod $importMethod = null;
+
+    #[ORM\Column]
+    #[Groups(['read', 'write'])]
+    private array $importParams = [];
+
     public function __construct()
     {
         $this->currencies = new ArrayCollection();
@@ -97,6 +105,30 @@ class Account implements UserOwnerInterface
     public function removeCurrency(Currency $currency): self
     {
         $this->currencies->removeElement($currency);
+
+        return $this;
+    }
+
+    public function getImportMethod(): ?ImportMethod
+    {
+        return $this->importMethod;
+    }
+
+    public function setImportMethod(?ImportMethod $importMethod): self
+    {
+        $this->importMethod = $importMethod;
+
+        return $this;
+    }
+
+    public function getImportParams(): array
+    {
+        return $this->importParams;
+    }
+
+    public function setImportParams(array $importParams): self
+    {
+        $this->importParams = $importParams;
 
         return $this;
     }
