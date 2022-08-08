@@ -20,13 +20,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiFilter(PropertyFilter::class)]
 class Currency
 {
+    const UAH = 'UAH';
+    const USD = 'USD';
+    const EUR = 'EUR';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups('read')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 3)]
+    #[ORM\Column(length: 3, unique: true)]
     #[Groups('read')]
     private ?string $code = null;
 

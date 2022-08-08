@@ -2,8 +2,11 @@
 
 namespace App\Repository\Currency;
 
+use App\Entity\Currency\Currency;
 use App\Entity\Currency\CurrencyRate;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,5 +40,18 @@ class CurrencyRateRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findLastByCurrency(Currency $currency, ?DateTimeInterface $date): ?CurrencyRate
+    {
+        $qb = $this->createQueryBuilder('rate')
+            ->where('rate.currency = :currency')
+            ->andWhere('rate.date < :date')
+            ->setParameter('currency', $currency)
+            ->setParameter('date', $date)
+            ->orderBy('rate.date', Criteria::DESC)
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }
