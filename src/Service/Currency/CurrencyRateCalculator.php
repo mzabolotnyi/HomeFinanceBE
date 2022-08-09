@@ -4,14 +4,10 @@ namespace App\Service\Currency;
 
 use App\Entity\Currency\Currency;
 use App\Repository\Currency\CurrencyRateRepository;
-use DateTime;
 use DateTimeInterface;
 
-class RateCalculator
+class CurrencyRateCalculator
 {
-    /** Currency for which rates apply */
-    const BASIC_CURRENCY = Currency::UAH;
-
     public function __construct(private CurrencyRateRepository $rateRepository)
     {
     }
@@ -23,13 +19,9 @@ class RateCalculator
 
     public function getRate(Currency $currencyFrom, ?Currency $currencyTo = null, ?DateTimeInterface $date = null): float
     {
-        if ($date === null) {
-            $date = new DateTime();
-        }
-
         $rate = $this->getLastRate($currencyFrom, $date);
 
-        if ($currencyTo !== null && $currencyTo->getCode() !== self::BASIC_CURRENCY) {
+        if ($currencyTo !== null && $currencyTo->getCode() !== CurrencyRateFetcher::BASIC_CURRENCY) {
             $rateDefault = $this->getLastRate($currencyTo, $date);
             $rate        = round($rate / $rateDefault, 6);
         }
@@ -37,7 +29,7 @@ class RateCalculator
         return $rate;
     }
 
-    private function getLastRate(Currency $currency, $date): float
+    private function getLastRate(Currency $currency, ?DateTimeInterface $date): float
     {
         $rateCurrency = $this->rateRepository->findLastByCurrency($currency, $date);
 

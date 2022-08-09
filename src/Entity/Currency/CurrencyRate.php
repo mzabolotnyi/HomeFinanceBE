@@ -29,19 +29,27 @@ class CurrencyRate
     #[ORM\ManyToOne(inversedBy: 'rates')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups('read')]
-    private ?Currency $currency = null;
+    private ?Currency $currency;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Groups('read')]
-    private ?DateTimeImmutable $date = null;
+    private ?DateTimeImmutable $date;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 4)]
     #[Groups('read')]
-    private ?string $rate = null;
+    private ?string $rate;
 
     #[ORM\Column]
     #[Groups('read')]
-    private ?int $size = null;
+    private ?int $size;
+
+    public function __construct(Currency $currency, DateTimeImmutable $date, string $rate, int $size)
+    {
+        $this->currency = $currency;
+        $this->date     = $date;
+        $this->rate     = $rate;
+        $this->size     = $size;
+    }
 
     public function getId(): ?int
     {

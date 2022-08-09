@@ -4,6 +4,7 @@ namespace App\Repository\Currency;
 
 use App\Entity\Currency\Currency;
 use App\Entity\Currency\CurrencyRate;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
@@ -42,8 +43,12 @@ class CurrencyRateRepository extends ServiceEntityRepository
         }
     }
 
-    public function findLastByCurrency(Currency $currency, ?DateTimeInterface $date): ?CurrencyRate
+    public function findLastByCurrency(Currency $currency, ?DateTimeInterface $date = null): ?CurrencyRate
     {
+        if ($date === null) {
+            $date = new DateTime();
+        }
+
         $qb = $this->createQueryBuilder('rate')
             ->where('rate.currency = :currency')
             ->andWhere('rate.date < :date')

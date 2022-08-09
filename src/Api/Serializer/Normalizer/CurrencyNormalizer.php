@@ -5,7 +5,7 @@ namespace App\Api\Serializer\Normalizer;
 use App\Api\Serializer\AlreadyCalledTrait;
 use App\Entity\Currency\Currency;
 use App\Entity\User\User;
-use App\Service\Currency\RateCalculator;
+use App\Service\Currency\CurrencyRateCalculator;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -17,8 +17,8 @@ final class CurrencyNormalizer implements NormalizerInterface, NormalizerAwareIn
     use AlreadyCalledTrait;
 
     public function __construct(
-        private RateCalculator $rateCalculator,
-        private Security       $security
+        private CurrencyRateCalculator $currencyRateCalculator,
+        private Security               $security
     )
     {
     }
@@ -43,7 +43,7 @@ final class CurrencyNormalizer implements NormalizerInterface, NormalizerAwareIn
             /** @var User $user */
             $user               = $this->security->getUser();
             $currencyDefault    = $user?->getDefaultCurrency();
-            $normalized['rate'] = $this->rateCalculator->getRate($object, $currencyDefault);
+            $normalized['rate'] = $this->currencyRateCalculator->getRate($object, $currencyDefault);
         }
 
         return $normalized;
