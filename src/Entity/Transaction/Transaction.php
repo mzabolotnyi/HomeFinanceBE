@@ -10,6 +10,7 @@ use App\Entity\Category\Category;
 use App\Entity\Currency\Currency;
 use App\Entity\Mixin\HasUser;
 use App\Entity\Mixin\UserOwnerInterface;
+use App\Enum\Transaction\TransactionType;
 use App\Repository\Transaction\TransactionRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -39,11 +40,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class Transaction implements UserOwnerInterface
 {
     use HasUser;
-
-    const TYPE_INCOME        = 'income';
-    const TYPE_EXPENSE       = 'expense';
-    const TYPE_TRANSFER_FROM = 'transfer_from';
-    const TYPE_TRANSFER_TO   = 'transfer_to';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -81,10 +77,9 @@ class Transaction implements UserOwnerInterface
     #[Assert\Length(max: 255)]
     private ?string $comment = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, enumType: TransactionType::class)]
     #[Groups(['read', 'write'])]
-    #[Assert\Choice(choices: [self::TYPE_INCOME, self::TYPE_EXPENSE, self::TYPE_TRANSFER_FROM, self::TYPE_TRANSFER_TO])]
-    private ?string $type = null;
+    private ?TransactionType $type = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['read'])]
@@ -100,19 +95,19 @@ class Transaction implements UserOwnerInterface
     #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, $payload)
     {
-        if ($this->type === self::TYPE_TRANSFER_FROM && !$this->transferTo) {
+        if ($this->getTypeValue() === TransactionType::TransferFrom->value && !$this->transferTo) {
             $context->buildViolation('Transfer to can\'t be empty')
                 ->atPath('transferTo')
                 ->addViolation();
         }
-        
-        if ($this->type !== self::TYPE_TRANSFER_FROM && $this->transferTo) {
+
+        if ($this->getTypeValue() !== TransactionType::TransferFrom->value && $this->transferTo) {
             $context->buildViolation('Transfer to must be empty')
                 ->atPath('transferTo')
                 ->addViolation();
         }
-        
-        if ($this->transferTo && $this->transferTo->getType() !== self::TYPE_TRANSFER_TO) {
+
+        if ($this->transferTo && $this->transferTo->getType() && $this->transferTo->getTypeValue() !== TransactionType::TransferTo->value) {
             $context->buildViolation('Transfer to invalid type')
                 ->atPath('transferTo')
                 ->addViolation();
@@ -196,12 +191,17 @@ class Transaction implements UserOwnerInterface
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?TransactionType
     {
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function getTypeValue(): ?string
+    {
+        return $this->type?->value;
+    }
+
+    public function setType(TransactionType $type): self
     {
         $this->type = $type;
 

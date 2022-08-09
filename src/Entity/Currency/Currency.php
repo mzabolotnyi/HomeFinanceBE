@@ -5,6 +5,7 @@ namespace App\Entity\Currency;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use App\Enum\Currency\CurrencyCode;
 use App\Repository\Currency\CurrencyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,19 +21,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiFilter(PropertyFilter::class)]
 class Currency
 {
-    const UAH = 'UAH';
-    const USD = 'USD';
-    const EUR = 'EUR';
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups('read')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 3, unique: true)]
+    #[ORM\Column(length: 3, unique: true, enumType: CurrencyCode::class)]
     #[Groups('read')]
-    private ?string $code = null;
+    private ?CurrencyCode $code = null;
 
     #[ORM\Column(length: 1)]
     #[Groups('read')]
@@ -52,12 +49,17 @@ class Currency
         return $this->id;
     }
 
-    public function getCode(): ?string
+    public function getCode(): ?CurrencyCode
     {
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    public function getCodeValue(): ?string
+    {
+        return $this->code?->value;
+    }
+
+    public function setCode(CurrencyCode $code): self
     {
         $this->code = $code;
 

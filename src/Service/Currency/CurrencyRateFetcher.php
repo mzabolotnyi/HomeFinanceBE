@@ -4,20 +4,18 @@ namespace App\Service\Currency;
 
 use App\Entity\Currency\Currency;
 use App\Entity\Currency\CurrencyRate;
+use App\Enum\Currency\CurrencyCode;
 use DateTimeImmutable;
 use DateTimeInterface;
 use RuntimeException;
 
 class CurrencyRateFetcher
 {
-    /** Currency for which rates apply */
-    const BASIC_CURRENCY = Currency::UAH;
-
     public function fetch(Currency $currency, DateTimeInterface $date): CurrencyRate
     {
-        $code = $currency->getCode();
+        $code = $currency->getCodeValue();
 
-        if ($code !== self::BASIC_CURRENCY) {
+        if ($code !== CurrencyCode::getBasicValue()) {
 
             $json = file_get_contents("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode={$code}&date={$date->format('Ymd')}&json");
             $data = json_decode($json, true);

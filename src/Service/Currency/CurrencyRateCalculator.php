@@ -3,6 +3,7 @@
 namespace App\Service\Currency;
 
 use App\Entity\Currency\Currency;
+use App\Enum\Currency\CurrencyCode;
 use App\Repository\Currency\CurrencyRateRepository;
 use DateTimeInterface;
 
@@ -21,7 +22,7 @@ class CurrencyRateCalculator
     {
         $rate = $this->getLastRate($currencyFrom, $date);
 
-        if ($currencyTo !== null && $currencyTo->getCode() !== CurrencyRateFetcher::BASIC_CURRENCY) {
+        if ($currencyTo !== null && $currencyTo->getCodeValue() !== CurrencyCode::getBasicValue()) {
             $rateDefault = $this->getLastRate($currencyTo, $date);
             $rate        = round($rate / $rateDefault, 6);
         }
