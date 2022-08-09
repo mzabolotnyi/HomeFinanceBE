@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Entity\Mixin\HasName;
+use App\Enum\Account\ImportMethod as ImportMethodEnum;
 use App\Repository\Account\ImportMethodRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -22,9 +23,6 @@ class ImportMethod
 {
     use HasName;
 
-    const MONOBANK   = 'monobank';
-    const PRIVATBANK = 'privatbank';
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -34,8 +32,8 @@ class ImportMethod
     #[Groups(['read'])]
     private array $fields = [];
 
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
+    #[ORM\Column(length: 255, enumType: ImportMethodEnum::class)]
+    private ?ImportMethodEnum $slug = null;
 
     public function getId(): ?int
     {
@@ -54,12 +52,12 @@ class ImportMethod
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): ?ImportMethodEnum
     {
         return $this->slug;
     }
 
-    public function setSlug(string $slug): self
+    public function setSlug(ImportMethodEnum $slug): self
     {
         $this->slug = $slug;
 
