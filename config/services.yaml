@@ -13,6 +13,11 @@ services:
         bind:
             $currencyRatesFrom: '%env(CURRENCY_RATES_FROM)%'
 
+    # services whose classes are instances of CustomInterface will be tagged automatically
+    _instanceof:
+        App\Service\Transaction\Importer\TransactionImporterInterface:
+            tags: ['app.transaction_importer']
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -42,3 +47,7 @@ services:
     App\Api\DataPersister\TransactionPersister:
         bind:
             $decorated: '@api_platform.doctrine.orm.data_persister'
+
+    App\Service\Transaction\TransactionImporter:
+        bind:
+            $importers: !tagged { tag: 'app.transaction_importer' }

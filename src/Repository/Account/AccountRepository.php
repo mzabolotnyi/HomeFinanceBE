@@ -3,6 +3,7 @@
 namespace App\Repository\Account;
 
 use App\Entity\Account\Account;
+use App\Entity\User\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,5 +38,10 @@ class AccountRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findForImportTransactions(User $user): array
+    {
+        return $this->findBy(['user' => $user, 'import' => true]);
     }
 }

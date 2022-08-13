@@ -13,6 +13,7 @@ use App\Entity\Mixin\UserOwnerInterface;
 use App\Repository\Account\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -57,6 +58,10 @@ class Account implements UserOwnerInterface
     #[Groups(['read', 'write'])]
     #[Assert\Count(min: 1)]
     private Collection $currencies;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    #[Groups(['read', 'write'])]
+    private ?bool $import = false;
 
     #[ORM\ManyToOne]
     #[Groups(['read', 'write'])]
@@ -132,6 +137,18 @@ class Account implements UserOwnerInterface
     public function setImportParams(array $importParams): self
     {
         $this->importParams = $importParams;
+
+        return $this;
+    }
+
+    public function isImport(): ?bool
+    {
+        return $this->import;
+    }
+
+    public function setImport(bool $import): self
+    {
+        $this->import = $import;
 
         return $this;
     }

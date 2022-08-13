@@ -2,6 +2,7 @@
 
 namespace App\Service\Transaction\Importer;
 
+use App\Enum\Account\ImportMethod;
 use App\Enum\Currency\CurrencyCode;
 use App\Enum\Transaction\TransactionType;
 use App\Service\Monobank\Monobank;
@@ -12,6 +13,11 @@ class MonobankImporter implements TransactionImporterInterface
 {
     public function __construct(private Monobank $monobank)
     {
+    }
+
+    public function supports(ImportMethod $method): bool
+    {
+        return $method->value === ImportMethod::Monobank->value;
     }
 
     public function import(array $options, DateTimeInterface $startDate, DateTimeInterface $endDate): array

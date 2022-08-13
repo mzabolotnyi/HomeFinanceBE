@@ -2,10 +2,13 @@
 
 namespace App\Service\Transaction\Importer;
 
+use App\Enum\Account\ImportMethod;
 use DateTimeInterface;
 
 interface TransactionImporterInterface
 {
+    public function supports(ImportMethod $method): bool;
+
     /**
      * @param array $options
      * @param DateTimeInterface $startDate

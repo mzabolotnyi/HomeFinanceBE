@@ -41,7 +41,7 @@ class Privatbank
 
         $data = $this->parseResponse($response);
 
-        return $data['data']['info']['statements']['statement'] ?: [];
+        return $data['data']['info']['statements']['statement'] ?? [];
     }
 
     private function prepareRequestBody(string $data, string $signature, string $merchantId): string

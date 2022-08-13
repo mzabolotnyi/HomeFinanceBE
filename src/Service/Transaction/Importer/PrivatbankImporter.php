@@ -2,6 +2,7 @@
 
 namespace App\Service\Transaction\Importer;
 
+use App\Enum\Account\ImportMethod;
 use App\Enum\Currency\CurrencyCode;
 use App\Enum\Transaction\TransactionType;
 use App\Service\Privatbank\Privatbank;
@@ -12,6 +13,11 @@ class PrivatbankImporter implements TransactionImporterInterface
 {
     public function __construct(private Privatbank $privatbank)
     {
+    }
+
+    public function supports(ImportMethod $method): bool
+    {
+        return $method->value === ImportMethod::Privatbank->value;
     }
 
     public function import(array $options, DateTimeInterface $startDate, DateTimeInterface $endDate): array
