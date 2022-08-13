@@ -19,11 +19,11 @@ final class Version20220804162728 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $monobankFields = json_encode([["name" => "apiKey", "type" => "string"]]);
+        $monobankFields   = json_encode([['name' => 'token', 'type' => 'string']]);
         $privatbankFields = json_encode([
-            ["name" => "merchantId", "type" => "string"],
-            ["name" => "merchantPassword", "type" => "string"],
-            ["name" => "cardNumber", "type" => "string"]
+            ['name' => 'merchantId', 'type' => 'string'],
+            ['name' => 'merchantPassword', 'type' => 'string'],
+            ['name' => 'cardNumber', 'type' => 'string']
         ]);
 
         $this->addSql("INSERT INTO account_import_method (name, slug, fields) VALUES 

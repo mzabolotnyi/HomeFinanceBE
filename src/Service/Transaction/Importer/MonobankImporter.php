@@ -4,28 +4,23 @@ namespace App\Service\Transaction\Importer;
 
 use App\Enum\Currency\CurrencyCode;
 use App\Enum\Transaction\TransactionType;
+use App\Service\Monobank\Monobank;
 use DateTimeImmutable;
 use DateTimeInterface;
-use GuzzleHttp\Client;
 
 class MonobankImporter implements TransactionImporterInterface
 {
-    private ?Client $client;
-
-    public function __construct()
+    public function __construct(private Monobank $monobank)
     {
-        $this->client = new Client(['base_uri' => 'https://api.monobank.ua']);
     }
 
     public function import(array $options, DateTimeInterface $startDate, DateTimeInterface $endDate): array
     {
-        $token         = $options['apiKey'] ?? null;
-        $uri           = "/personal/statement/0/{$startDate->getTimestamp()}/{$endDate->getTimestamp()}";
-        $response      = $this->client->request('GET', $uri, ['headers' => ['X-Token' => $token]]);
-        $responseItems = json_decode($response->getBody()->getContents(), true);
-        $transactions  = [];
+        $token        = $options['token'];
+        $items        = $this->monobank->getStatement($token, $startDate, $endDate);
+        $transactions = [];
 
-        foreach ($responseItems as $item) {
+        foreach ($items as $item) {
             $transactions[] = $this->parseItem($item);
         }
 
